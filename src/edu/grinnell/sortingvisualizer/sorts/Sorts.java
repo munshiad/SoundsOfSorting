@@ -10,12 +10,15 @@ import edu.grinnell.sortingvisualizer.sortevents.SwapEvent;
 import edu.grinnell.sortingvisualizer.sortevents.CopyEvent;
 
 public class Sorts {
+    // Swap two elements of an array
     public static <T> void swap(T[] arr, int i, int j) { 
         T temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
     
+    // Sort an array using selection sort
+    // Return a list of sorting events so that the sort can be replayed
     public static <T extends Comparable<T>> List<SortEvent<T>> selectionSort(T[] arr) {
         List<SortEvent<T>> events = new ArrayList<SortEvent<T>>();
         for(int i = 0; i < arr.length - 1; i++) {
@@ -32,6 +35,8 @@ public class Sorts {
         return events;
     }
     
+    // Sort an array using insertion sort
+    // Return a list of sorting events so that the sort can be replayed
     public static <T extends Comparable<T>> List<SortEvent<T>> insertionSort(T[] arr) {
         List<SortEvent<T>> events = new ArrayList<SortEvent<T>>();
         for (int i = 1; i < arr.length; i++) {
@@ -49,10 +54,13 @@ public class Sorts {
         return events;
     }
     
+    // Sort an array using merge sort
+    // Return a list of sorting events so that the sort can be replayed
     public static <T extends Comparable<T>> List<SortEvent<T>> mergeSort(Object[] arr) {
         return mergeSort(arr, 0, arr.length - 1);
     }
     
+    // Helper method for merge sort that keeps track of what part of the array is being sorted
     @SuppressWarnings("unchecked")
     private static <T extends Comparable<T>> List<SortEvent<T>> mergeSort(Object[] arr, int start, int end) {
         List<SortEvent<T>> events = new ArrayList<SortEvent<T>>();
@@ -100,9 +108,13 @@ public class Sorts {
         return events;
     }
     
+    // Sort an array using quick sort
+    // Return a list of sorting events so that the sort can be replayed
     public static <T extends Comparable<T>> List<SortEvent<T>> quickSort(T[] arr) {
         return quickSort(arr, 0, arr.length - 1);
     }
+    
+    // Helper method for quick sort that keeps track of what part of the array is being sorted
     public static <T extends Comparable<T>> List<SortEvent<T>> quickSort(T[] arr, int start, int end) {
         List<SortEvent<T>> events = new ArrayList<>();
         if(start >= end) {
@@ -129,6 +141,8 @@ public class Sorts {
         return events;
         
     }
+    
+    // Helper method for quick sort that picks a pivot index
     private static <T extends Comparable<T>> int median(T[] arr, int start, int end, List<SortEvent<T>> events) {
         int firstIndex = start;
         int lastIndex = end;
@@ -151,21 +165,10 @@ public class Sorts {
             return lastIndex;
         }
         return firstIndex;
-        
-//        if (lessThan(first, mid, last) || lessThan(last, mid, first)) {
-//            return midIndex;
-//        } else if (lessThan(first, last, mid) || lessThan(mid, last, first)) {
-//            return lastIndex;
-//        } else if (lessThan(last, first, mid)) {
-//            return firstIndex;
-//        }
-        
     }
     
-    private static <T extends Comparable<T>> boolean lessThan(T a, T b, T c) { // a is the smallest, c is the biggest
-        return a.compareTo(b) <= 0 && b.compareTo(c) <= 0;
-    }
-    
+    // Sort an array using bubble sort
+    // Return a list of sorting events so that the sort can be replayed
     public static <T extends Comparable<T>> List<SortEvent<T>> bubbleSort(T[] arr) {
         for(int i = 0; i < arr.length - 1; i++) {//number of elements sorted
             for (int j = 1; j < arr.length - i; j++) { //find the biggest element, place at end
@@ -177,10 +180,13 @@ public class Sorts {
         return null; //fix
     }
     
+    // Sort an array using bubble sort
+    // Return a list of sorting events so that the sort can be replayed
     public static <T extends Comparable<T>> List<SortEvent<T>> customSort(T[] arr) {
         return bubbleSort(arr);
     }
     
+    // Sort an array by replaying sort events
     public static <T extends Comparable<T>> void eventSort(T[] arr, List<SortEvent<T>> events) {
         
     }
