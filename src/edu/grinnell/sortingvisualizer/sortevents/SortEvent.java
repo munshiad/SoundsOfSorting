@@ -1,5 +1,9 @@
 package edu.grinnell.sortingvisualizer.sortevents;
 
-public interface SortEvent<T> {
-    // TODO: fill in the SortEvent<T> interface definition
+import java.util.List;
+
+public interface SortEvent<T extends Comparable<T>> {
+    void apply(T[] arr);
+    List<Integer> getAffectedIndices();
+    boolean isEmphasized();
 }
