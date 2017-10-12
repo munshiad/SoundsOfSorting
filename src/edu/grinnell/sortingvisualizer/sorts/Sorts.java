@@ -68,7 +68,7 @@ public class Sorts {
             return events;
         }
         int rightHalfStart = (start + end + 1) / 2;
-        Object[] sortedArr = new Object[arr.length];
+        Object[] sortedArr = new Object[end - start + 1];
         int lCounter = start;
         int rCounter = rightHalfStart;
         
@@ -102,8 +102,8 @@ public class Sorts {
             rCounter++;
         }
         for (int i = 0; i < sortedArr.length; i++) {
-            events.add(new CopyEvent<T>(i));
-            arr[i] = sortedArr[i];
+            events.add(new CopyEvent<T>(i + start, (T) sortedArr[i]));
+            arr[i + start] = sortedArr[i];
         }
         return events;
     }
@@ -121,7 +121,7 @@ public class Sorts {
             return events;
         }
         int leftHalf = start;
-        int pivotIndex = median(arr, start, end);
+        int pivotIndex = median(arr, start, end, events);
         T pivotValue = arr[pivotIndex];
 
         events.add(new SwapEvent<T>(start, pivotIndex));
@@ -170,14 +170,17 @@ public class Sorts {
     // Sort an array using bubble sort
     // Return a list of sorting events so that the sort can be replayed
     public static <T extends Comparable<T>> List<SortEvent<T>> bubbleSort(T[] arr) {
+        List<SortEvent<T>> events = new ArrayList<>();
         for(int i = 0; i < arr.length - 1; i++) {//number of elements sorted
             for (int j = 1; j < arr.length - i; j++) { //find the biggest element, place at end
+                events.add(new CompareEvent<T>(j, j-1));
                 if(arr[j].compareTo(arr[j-1]) < 0) {
+                    events.add(new SwapEvent<T>(j, j-1));
                     swap(arr, j, j-1);
                 }
             }
         }
-        return null; //fix
+        return events;
     }
     
     // Sort an array using bubble sort
@@ -188,7 +191,9 @@ public class Sorts {
     
     // Sort an array by replaying sort events
     public static <T extends Comparable<T>> void eventSort(T[] arr, List<SortEvent<T>> events) {
-        
+        for (SortEvent<T> event : events) {
+            event.apply(arr);
+        }
     }
    
 }

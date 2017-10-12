@@ -1,5 +1,10 @@
 package edu.grinnell.sortingvisualizer.audio;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * A collection of indices into a Scale object.
  * These indices are the subject of the various sorting algorithms
@@ -7,11 +12,18 @@ package edu.grinnell.sortingvisualizer.audio;
  */
 public class NoteIndices {
 
+    private Integer[] indices;
+    private boolean[] highlighted;
+    
     /**
      * @param n the size of the scale object that these indices map into
      */
     public NoteIndices(int n) {
-        // TODO: fill me in
+        indices = new Integer[n];
+        highlighted = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            indices[i] = i;
+        }
     }
     
     /**
@@ -21,13 +33,21 @@ public class NoteIndices {
      * @param n the size of the scale object that these indices map into
      */
     public void initializeAndShuffle(int n) {
-        // TODO: fill me in
+        List<Integer> list = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            list.add(i, i);
+        }
+        Collections.shuffle(list);
+        indices = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            indices[i] = list.get(i);
+        }
+        highlighted = new boolean[n];
     }
     
     /** @return the indices of this NoteIndices object */
-    public Integer[] getNotes() { 
-        // TODO: fill me in
-        return null;
+    public Integer[] getNotes() {
+        return indices;
     }
     
     /**
@@ -35,17 +55,22 @@ public class NoteIndices {
      * @param index the index to highlight
      */
     public void highlightNote(int index) {
-        // TODO: fill me in
+        highlighted[index] = true;
     }
     
     /** @return true if the given index is highlighted */
     public boolean isHighlighted(int index) {
-        // TODO: fill me in
-        return false;
+//        try {
+            return highlighted[index];
+//        } catch (NullPointerException e) {
+//            return false;
+//        }
     }
     
     /** Clears all highlighted indices from this collection */
     public void clearAllHighlighted() {
-        // TODO: fill me in
+        for (int i = 0; i < highlighted.length; i++) {
+            highlighted[i] = false;
+        }
     }
 }

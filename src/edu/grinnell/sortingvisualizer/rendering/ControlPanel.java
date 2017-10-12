@@ -3,6 +3,7 @@ package edu.grinnell.sortingvisualizer.rendering;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -142,7 +143,9 @@ public class ControlPanel extends JPanel {
                 // TODO: fill me in
                 // 1. Create the sorting events list
                 // 2. Add in the compare events to the end of the list
-                List<SortEvent<Integer>> events = new java.util.LinkedList<>();
+//                List<SortEvent<Integer>> events = new java.util.LinkedList<>();
+                Integer[] notesCopy = Arrays.copyOf(notes.getNotes(), notes.getNotes().length);
+                List<SortEvent<Integer>> events = generateEvents(sorts.getSelectedItem().toString(), notesCopy);
                 
                 // NOTE: The Timer class repetitively invokes a method at a
                 //       fixed interval.  Here we are specifying that method
@@ -163,9 +166,18 @@ public class ControlPanel extends JPanel {
                             // 3. Play the corresponding notes denoted by the
                             //    affected indices logged in the event.
                             // 4. Highlight those affected indices.
+                            e.apply(notes.getNotes());
+                            notes.clearAllHighlighted();
+                            for (int i : e.getAffectedIndices()) {
+                                scale.playNote(i, e.isEmphasized());
+                                if (e.isEmphasized()) {
+                                    notes.highlightNote(i);
+                                }
+                            }
                             panel.repaint();
                         } else {
                             this.cancel();
+                            notes.clearAllHighlighted();
                             panel.repaint();
                             isSorting = false;
                         }
